@@ -1,0 +1,67 @@
+<h3 class="text-center text-light mt-5">TODO LIST</h3>
+<div class="container border bg-light mt-3">
+  
+  <div class="row justify-content-center">
+    <h4 class="text-center"><u>TodoInput</u></h4>
+    <div class="col-md-8 border border-0">
+      <div class="row">
+        <div class="col-4">
+          <input type="checkbox" [(ngModel)]="inputEnabled"  > Enable Input
+        </div>
+        <div class="col-4 text-right">
+          <input type="checkbox" [(ngModel)]="buttonEnabled"> Enable Button
+
+        </div>
+      </div>
+     <input type="text" placeholder="Enter a task" class="form-control mt-2"  #task [disabled]="!inputEnabled" />
+      <input type="date" class="form-control mt-2" #dueDate  [disabled]="!inputEnabled" />
+      <div>
+        <button class="btn btn-primary mt-2 form-control" (click)="addTask(task.value, dueDate.value)"
+        [disabled]="!buttonEnabled">Add New Task</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row justify-content-center mt-3">
+    <h4 class="text-center"><u>TodoList</u></h4>
+    <div class="col-md-4">
+      <button class="btn btn-success form-control mt-2" (click)="filterTask('all')" [disabled]="!buttonEnabled">
+        All Task</button></div>
+    <div class="col-md-4">
+      <button class="btn btn-success form-control mt-2" (click)="filterTask('completed')" [disabled]="!buttonEnabled">
+        Completed</button>
+    </div>
+    <div class="col-md-4">
+      <button class="btn btn-success form-control mt-2" (click)="filterTask('pending')" [disabled]="!buttonEnabled">
+        Pending</button>
+    </div>
+  </div>
+
+  <ul *ngFor="let item of filteredList; let i = index">
+    <li class="d-flex justify-content-between mt-3">
+      <div class="col-md-8" [ngStyle]="{
+        'text-decoration': item.status === 'done' ? 'line-through' : 'none',
+        'color': item.status === 'done' ? 'red' : 'black'}">
+        {{ item.id }}: {{ item.name }}
+        <span *ngIf="item.dueDate">&nbsp; Due on: {{ item.dueDate | date:'medium' }}</span>
+      </div>
+      <div class="col-4 text-end">
+        <i class="fa fa-trash mr-2" (click)="deleteTask(item.id)" style="margin-right: 10px;"></i>
+        <i class="fa fa-check-square-o ml-2" (click)="doneTask(i)" [ngClass]="{'done-icon': item.status === 'done'}"></i>
+      </div>
+    </li>
+  </ul>
+  
+  <div class="row justify-content-center mt-3">
+    <div class="col-md-6">
+      <button class="btn btn-danger form-control mt-2" (click)="deleteDoneTasks()" [disabled]="!buttonEnabled">
+        Delete done tasks</button>
+    </div>
+    <div class="col-md-6">
+      <button class="btn btn-danger form-control mt-2" (click)="deleteAllTasks()" [disabled]="!buttonEnabled">
+        Delete all tasks</button>
+    </div>
+    </div>
+ 
+    
+
